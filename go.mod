@@ -3,8 +3,10 @@ module github.com/w-woong/order
 go 1.18
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/stretchr/testify v1.8.0
 	github.com/w-woong/common v0.0.14
+	github.com/wonksing/structmapper v0.0.4
 	gorm.io/driver/postgres v1.4.4
 	gorm.io/gorm v1.24.2
 )

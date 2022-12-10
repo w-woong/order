@@ -14,6 +14,8 @@ type CartRepo interface {
 	ReadCartNoTx(ctx context.Context, id string) (entity.Cart, error)
 	UpdateCart(ctx context.Context, tx common.TxController, id string, cart entity.Cart) (int64, error)
 	DeleteCart(ctx context.Context, tx common.TxController, id string) (int64, error)
+
+	ReadByUserIDNoTx(ctx context.Context, userID string) (entity.Cart, error)
 }
 
 type CartProductRepo interface {
@@ -29,7 +31,7 @@ type CartProductRepo interface {
 
 type CartUsc interface {
 	FindByUserID(ctx context.Context, userID string) (dto.Cart, error)
-	MakeCart(ctx context.Context, userID string) (int64, error)
+	// MakeCart(ctx context.Context, userID string) (int64, error)
 	AddCartProduct(ctx context.Context, id string, cartProduct dto.CartProduct) (int64, error)
 	ModifyCartProduct(ctx context.Context, id string, cartProduct dto.CartProduct) (int64, error)
 	RemoveCartProduct(ctx context.Context, id string) (int64, error)

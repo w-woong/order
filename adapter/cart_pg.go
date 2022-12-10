@@ -57,6 +57,10 @@ func (a *cartPg) readCart(ctx context.Context, db *gorm.DB, id string) (entity.C
 	return cart, nil
 }
 
+func (a *cartPg) ReadByUserIDNoTx(ctx context.Context, userID string) (entity.Cart, error) {
+	return a.readByUserID(ctx, a.db, userID)
+}
+
 func (a *cartPg) UpdateCart(ctx context.Context, tx common.TxController, id string, cart entity.Cart) (int64, error) {
 
 	res := tx.(*txcom.GormTxController).Tx.
@@ -81,4 +85,20 @@ func (a *cartPg) DeleteCart(ctx context.Context, tx common.TxController, id stri
 		return 0, txcom.ConvertErr(res.Error)
 	}
 	return res.RowsAffected, nil
+}
+
+func (a *cartPg) readByUserID(ctx context.Context, db *gorm.DB, userID string) (entity.Cart, error) {
+
+	var cart entity.Cart
+	res := db.WithContext(ctx).
+		Where("user_id = ?", userID).
+		Preload(clause.Associations).
+		Limit(1).Find(&cart)
+	if res.Error != nil {
+		return entity.NilCart, txcom.ConvertErr(res.Error)
+	}
+	if res.RowsAffected == 0 {
+		return entity.NilCart, common.ErrRecordNotFound
+	}
+	return cart, nil
 }

@@ -31,12 +31,15 @@ func (e *CartList) String() string {
 }
 
 type CartProduct struct {
-	ID         string     `json:"id"`
-	CreatedAt  *time.Time `json:"created_at,omitempty"`
-	UpdatedAt  *time.Time `json:"updated_at,omitempty"`
-	CartID     string     `json:"cart_id"`
-	ProductID  string     `json:"product_id"`
-	ProductQty int        `json:"product_qty"`
+	ID        string     `json:"id"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	CartID    string     `json:"cart_id"`
+	ProductID string     `json:"product_id"`
+	Cost      float64    `json:"cost"`
+	Qty       float64    `json:"qty"`
+	Amt       float64    `json:"amt"`
+	Selected  bool       `json:"selected"`
 }
 
 func (e *CartProduct) String() string {

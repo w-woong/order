@@ -25,7 +25,7 @@ func CartRoute(router *mux.Router, conf common.ConfigHttp,
 	)).Methods(http.MethodGet)
 
 	router.HandleFunc("/test/order/cart", middlewares.AuthIDTokenUserAccountHandler(
-		handler.HandleFindByUserIDError, validator, userSvc,
+		handler.HandleTestRefreshError, validator, userSvc,
 	)).Methods(http.MethodGet)
 
 	router.HandleFunc("/v1/order/cart/product", middlewares.AuthIDTokenUserAccountHandler(

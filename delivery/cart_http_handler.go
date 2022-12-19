@@ -172,40 +172,10 @@ func (d *CartHttpHandler) HandleAddCartProduct(w http.ResponseWriter, r *http.Re
 
 }
 
-func (d *CartHttpHandler) HandleFindByUserIDError(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	// claims, ok := ctx.Value(commondto.IDTokenClaimsKey{}).(commondto.IDTokenClaims)
-	// if !ok {
-	// 	common.HttpError(w, http.StatusInternalServerError)
-	// 	logger.Error("could not find claims", logger.UrlField(r.URL.String()))
-	// 	return
-	// }
-
-	// tokenSource, ok := ctx.Value(commondto.TokenSourceKey{}).(string)
-	// if !ok {
-	// 	common.HttpError(w, http.StatusInternalServerError)
-	// 	logger.Error("could not find claims", logger.UrlField(r.URL.String()))
-	// 	return
-	// }
-
-	user, ok := ctx.Value(commondto.UserAccountKey{}).(commondto.User)
-	if !ok {
-		common.HttpError(w, http.StatusInternalServerError)
-		logger.Error("could not find claims", logger.UrlField(r.URL.String()))
-		return
-	}
-
-	cart, err := d.usc.FindByUserID(ctx, user.ID)
-	if err != nil {
-		common.HttpErrorWithBody(w, http.StatusInternalServerError, common.NewHttpBody(err.Error(), http.StatusInternalServerError))
-		logger.Error(err.Error(), logger.UrlField(r.URL.String()))
-		return
-	}
-
+func (d *CartHttpHandler) HandleTestRefreshError(w http.ResponseWriter, r *http.Request) {
 	resBody := common.HttpBody{
-		Status:   common.StatusTryRefreshIDToken,
-		Count:    1,
-		Document: &cart,
+		Status:  common.StatusTryRefreshIDToken,
+		Message: "test refresh error",
 	}
 
 	common.HttpErrorWithBody(w, http.StatusUnauthorized, &resBody)

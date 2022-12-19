@@ -57,6 +57,9 @@ func (a *cartPg) readCart(ctx context.Context, db *gorm.DB, id string) (entity.C
 	return cart, nil
 }
 
+func (a *cartPg) ReadByUserID(ctx context.Context, tx common.TxController, userID string) (entity.Cart, error) {
+	return a.readByUserID(ctx, tx.(*txcom.GormTxController).Tx, userID)
+}
 func (a *cartPg) ReadByUserIDNoTx(ctx context.Context, userID string) (entity.Cart, error) {
 	return a.readByUserID(ctx, a.db, userID)
 }

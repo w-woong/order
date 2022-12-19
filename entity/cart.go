@@ -17,7 +17,7 @@ type Cart struct {
 	CreatedAt    *time.Time      `gorm:"<-:create" json:"created_at,omitempty"`
 	UpdatedAt    *time.Time      `gorm:"<-" json:"updated_at,omitempty"`
 	UserID       string          `gorm:"unique;column:user_id;type:string;size:64;index:idx_carts_1" json:"user_id"`
-	CartProducts CartProductList `gorm:"foreignKey:CartID;references:ID" json:"card_products"`
+	CartProducts CartProductList `gorm:"foreignKey:CartID;references:ID" json:"cart_products"`
 }
 
 func (e *Cart) String() string {
@@ -35,6 +35,10 @@ func (e Cart) CreateID() string {
 
 func (e *Cart) CreateSetID() {
 	e.ID = e.CreateID()
+}
+
+func (e *Cart) ReferTo(userID string) {
+	e.UserID = userID
 }
 
 type CartList []Cart
@@ -69,6 +73,9 @@ func (e CartProduct) CreateID() string {
 
 func (e *CartProduct) CreateSetID() {
 	e.ID = e.CreateID()
+	now := time.Now()
+	e.CreatedAt = &now
+	e.UpdatedAt = &now
 }
 
 func (e *CartProduct) ReferTo(cartID string) {

@@ -1,5 +1,7 @@
 package port
 
+//go:generate mockgen -destination=./mocks/mock_cart_port.go -package=mocks -mock_names=CartRepo=MockCartRepo,CartProductRepo=MockCartProductRepo,CartUsc=MockCartUsc -source=./cart_port.go . CartRepo,CartProductRepo,CartUsc
+
 import (
 	"context"
 
@@ -15,6 +17,7 @@ type CartRepo interface {
 	UpdateCart(ctx context.Context, tx common.TxController, id string, cart entity.Cart) (int64, error)
 	DeleteCart(ctx context.Context, tx common.TxController, id string) (int64, error)
 
+	ReadByUserID(ctx context.Context, tx common.TxController, userID string) (entity.Cart, error)
 	ReadByUserIDNoTx(ctx context.Context, userID string) (entity.Cart, error)
 }
 
@@ -31,9 +34,9 @@ type CartProductRepo interface {
 
 type CartUsc interface {
 	FindByUserID(ctx context.Context, userID string) (dto.Cart, error)
-	// MakeCart(ctx context.Context, userID string) (int64, error)
-	AddCartProduct(ctx context.Context, id string, cartProduct dto.CartProduct) (int64, error)
-	ModifyCartProduct(ctx context.Context, id string, cartProduct dto.CartProduct) (int64, error)
-	RemoveCartProduct(ctx context.Context, id string) (int64, error)
-	ClearCart(ctx context.Context, id string) (int64, error)
+	FindOrCreateByUserID(ctx context.Context, userID string) (dto.Cart, error)
+	AddCartProduct(ctx context.Context, cartID string, cartProduct dto.CartProduct) (int64, error)
+	// ModifyCartProduct(ctx context.Context, id string, cartProduct dto.CartProduct) (int64, error)
+	// RemoveCartProduct(ctx context.Context, id string) (int64, error)
+	// ClearCart(ctx context.Context, id string) (int64, error)
 }

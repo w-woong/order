@@ -27,10 +27,10 @@ func NewCartUsc(beginner common.TxBeginner, isolationLvl common.IsolationLevelSe
 	}
 }
 
-func (u *cartUsc) AddCartProduct(ctx context.Context, cartID string, cartProduct dto.CartProduct) (int64, error) {
+func (u *cartUsc) AddCartProduct(ctx context.Context, cartID string, cartProduct dto.CartProduct) (dto.CartProduct, error) {
 	e, err := conv.ToCartProductEntity(&cartProduct)
 	if err != nil {
-		return 0, err
+		return dto.NilCartProduct, err
 	}
 
 	e.CreateSetID()
@@ -38,16 +38,18 @@ func (u *cartUsc) AddCartProduct(ctx context.Context, cartID string, cartProduct
 
 	tx, err := u.beginner.Begin()
 	if err != nil {
-		return 0, err
+		return dto.NilCartProduct, err
 	}
 	defer tx.Rollback()
 
-	rowsAffected, err := u.cartProductRepo.CreateCartProduct(ctx, tx, e)
-	if err != nil {
-		return 0, err
+	if _, err = u.cartProductRepo.CreateCartProduct(ctx, tx, e); err != nil {
+		return dto.NilCartProduct, err
 	}
 
-	return rowsAffected, tx.Commit()
+	if err = tx.Commit(); err != nil {
+		return dto.NilCartProduct, err
+	}
+	return conv.ToCartProductDto(&e)
 }
 
 func (u *cartUsc) FindByUserID(ctx context.Context, userID string) (dto.Cart, error) {

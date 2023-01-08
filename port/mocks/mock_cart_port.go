@@ -279,10 +279,10 @@ func (m *MockCartUsc) EXPECT() *MockCartUscMockRecorder {
 }
 
 // AddCartProduct mocks base method.
-func (m *MockCartUsc) AddCartProduct(ctx context.Context, cartID string, cartProduct dto.CartProduct) (int64, error) {
+func (m *MockCartUsc) AddCartProduct(ctx context.Context, cartID string, cartProduct dto.CartProduct) (dto.CartProduct, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddCartProduct", ctx, cartID, cartProduct)
-	ret0, _ := ret[0].(int64)
+	ret0, _ := ret[0].(dto.CartProduct)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

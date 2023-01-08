@@ -35,7 +35,7 @@ type CartProductRepo interface {
 type CartUsc interface {
 	FindByUserID(ctx context.Context, userID string) (dto.Cart, error)
 	FindOrCreateByUserID(ctx context.Context, userID string) (dto.Cart, error)
-	AddCartProduct(ctx context.Context, cartID string, cartProduct dto.CartProduct) (int64, error)
+	AddCartProduct(ctx context.Context, cartID string, cartProduct dto.CartProduct) (dto.CartProduct, error)
 	// ModifyCartProduct(ctx context.Context, id string, cartProduct dto.CartProduct) (int64, error)
 	// RemoveCartProduct(ctx context.Context, id string) (int64, error)
 	// ClearCart(ctx context.Context, id string) (int64, error)

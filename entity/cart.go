@@ -57,7 +57,7 @@ type CartProduct struct {
 	Cost      float64    `gorm:"not null;column:cost;type:float;scale:4;precision:16" json:"cost"`
 	Qty       float64    `gorm:"not null;column:qty;type:float;scale:4;precision:16" json:"qty"`
 	Amt       float64    `gorm:"not null;column:amt;type:float;scale:4;precision:20" json:"amt"`
-	Selected  bool       `gorm:"not null;column:selected:type:bool" json:"selected"`
+	Selected  bool       `gorm:"not null;column:selected;type:bool" json:"selected"`
 }
 
 func (e *CartProduct) String() string {

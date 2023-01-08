@@ -108,7 +108,7 @@ func (d *CartHttpHandler) HandleFindOrCreateByUserID(w http.ResponseWriter, r *h
 		logger.Error(err.Error(), logger.UrlField(r.URL.String()))
 		return
 	}
-
+	logger.Debug(resBody.String(), logger.UrlField(r.URL.String()))
 }
 
 func (d *CartHttpHandler) HandleAddCartProduct(w http.ResponseWriter, r *http.Request) {
@@ -146,6 +146,8 @@ func (d *CartHttpHandler) HandleAddCartProduct(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	logger.Debug(copiedReqBody.String())
+
 	cart, err := d.usc.FindByUserID(ctx, user.ID)
 	if err != nil {
 		common.HttpErrorWithBody(w, http.StatusInternalServerError, common.NewHttpBody(err.Error(), http.StatusInternalServerError))
@@ -153,7 +155,7 @@ func (d *CartHttpHandler) HandleAddCartProduct(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	rowsAffected, err := d.usc.AddCartProduct(ctx, cart.ID, cartProduct)
+	addedCartProduct, err := d.usc.AddCartProduct(ctx, cart.ID, cartProduct)
 	if err != nil {
 		common.HttpErrorWithBody(w, http.StatusInternalServerError, common.NewHttpBody(err.Error(), http.StatusInternalServerError))
 		logger.Error(err.Error(), logger.UrlField(r.URL.String()))
@@ -161,8 +163,9 @@ func (d *CartHttpHandler) HandleAddCartProduct(w http.ResponseWriter, r *http.Re
 	}
 
 	resBody := common.HttpBody{
-		Status: http.StatusOK,
-		Count:  int(rowsAffected),
+		Status:   http.StatusOK,
+		Count:    1,
+		Document: &addedCartProduct,
 	}
 
 	if err := resBody.EncodeTo(w); err != nil {

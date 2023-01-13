@@ -29,7 +29,7 @@ server:
     driver: 'pgx'
     conn_str: 'host=testpghost user=test password=test123 dbname=woong_order port=5432 sslmode=disable TimeZone=Asia/Seoul'
     # used when driver is oci8, postgres, mssql...
-    max_idle_conns: 25
+    max_idle_conns: 5
     max_open_conns: 25
     conn_max_lifetime_in_min: 15
 
@@ -52,7 +52,7 @@ client:
         openid_conf_url: 'https://accounts.google.com/.well-known/openid-configuration'
 
   user_grpc:
-    addr: '192.168.0.92:42001,192.168.0.92:42001'
+    addr: 'localhost:42001,localhost:42001'
     keep_alive:
       time: 60
       timeout: 1

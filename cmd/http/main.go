@@ -25,6 +25,7 @@ import (
 	"github.com/w-woong/common/wrapper"
 	"github.com/w-woong/order/adapter"
 	"github.com/w-woong/order/cmd/route"
+	"github.com/w-woong/order/entity"
 	"github.com/w-woong/order/port"
 	"github.com/w-woong/order/usecase"
 	"gorm.io/gorm"
@@ -47,8 +48,9 @@ var (
 	configName       string
 	maxProc          int
 
-	usePprof  = false
-	pprofAddr = ":56060"
+	usePprof    = false
+	pprofAddr   = ":56060"
+	autoMigrate = false
 )
 
 func init() {
@@ -64,6 +66,7 @@ func init() {
 
 	flag.BoolVar(&usePprof, "pprof", false, "use pprof")
 	flag.StringVar(&pprofAddr, "pprof_addr", ":56060", "pprof listen address")
+	flag.BoolVar(&autoMigrate, "autoMigrate", false, "auto migrate")
 
 	flag.Parse()
 }
@@ -172,6 +175,11 @@ func main() {
 		logger.Error(conf.Server.Repo.Driver + " is not allowed")
 		os.Exit(1)
 	}
+
+	if autoMigrate {
+		gormDB.AutoMigrate(&entity.Cart{}, &entity.CartProduct{})
+	}
+
 	usc := usecase.NewCartUsc(txBeginner, isolationLvl, cartRepo, cartProductRepo)
 
 	// oauth2

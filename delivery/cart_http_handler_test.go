@@ -40,7 +40,7 @@ var (
 
 func Test_CartHttpHandler_HandleAddCartProduct(t *testing.T) {
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, commondto.UserAccountKey{}, userDto)
+	ctx = context.WithValue(ctx, commondto.UserAccountContextKey{}, userDto)
 
 	urlPath := "/v1/order/cart/product"
 	ctrl := gomock.NewController(t)

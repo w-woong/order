@@ -41,7 +41,7 @@ func (d *CartHttpHandler) HandleFindByUserID(w http.ResponseWriter, r *http.Requ
 	// 	return
 	// }
 
-	user, ok := ctx.Value(commondto.UserAccountKey{}).(commondto.User)
+	user, ok := ctx.Value(commondto.UserAccountContextKey{}).(commondto.User)
 	if !ok {
 		common.HttpError(w, http.StatusInternalServerError)
 		logger.Error("could not find claims", logger.UrlField(r.URL.String()))
@@ -84,7 +84,7 @@ func (d *CartHttpHandler) HandleFindOrCreateByUserID(w http.ResponseWriter, r *h
 	// 	return
 	// }
 
-	user, ok := ctx.Value(commondto.UserAccountKey{}).(commondto.User)
+	user, ok := ctx.Value(commondto.UserAccountContextKey{}).(commondto.User)
 	if !ok {
 		common.HttpError(w, http.StatusInternalServerError)
 		logger.Error("could not find claims", logger.UrlField(r.URL.String()))
@@ -113,21 +113,7 @@ func (d *CartHttpHandler) HandleFindOrCreateByUserID(w http.ResponseWriter, r *h
 
 func (d *CartHttpHandler) HandleAddCartProduct(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	// claims, ok := ctx.Value(commondto.IDTokenClaimsKey{}).(commondto.IDTokenClaims)
-	// if !ok {
-	// 	common.HttpError(w, http.StatusInternalServerError)
-	// 	logger.Error("could not find claims", logger.UrlField(r.URL.String()))
-	// 	return
-	// }
-
-	// tokenSource, ok := ctx.Value(commondto.TokenSourceKey{}).(string)
-	// if !ok {
-	// 	common.HttpError(w, http.StatusInternalServerError)
-	// 	logger.Error("could not find claims", logger.UrlField(r.URL.String()))
-	// 	return
-	// }
-
-	user, ok := ctx.Value(commondto.UserAccountKey{}).(commondto.User)
+	user, ok := ctx.Value(commondto.UserAccountContextKey{}).(commondto.User)
 	if !ok {
 		common.HttpError(w, http.StatusInternalServerError)
 		logger.Error("could not find user", logger.UrlField(r.URL.String()))

@@ -13,7 +13,7 @@ import (
 )
 
 func CartRoute(router *mux.Router, conf common.ConfigHttp,
-	tokenCookie commonport.TokenCookie,
+	tokenCookie commonport.Cookie,
 	parser commonport.IDTokenParser, usc port.CartUsc, userSvc commonport.UserSvc) *delivery.CartHttpHandler {
 
 	handler := delivery.NewCartHttpHandler(time.Duration(conf.Timeout)*time.Second, usc)
